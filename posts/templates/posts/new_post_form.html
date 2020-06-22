@@ -1,0 +1,20 @@
+{% extends 'wordskill/base.html' %}
+{% load crispy_forms_tags %}
+	{% block head %}
+		<title>wordSkill-Draft New Post</title>
+	{% endblock %}
+
+	{% block content %}
+	
+	  <div class="mx-auto col-md-10">
+	    <div class="card card-body">
+	      <form method="POST" enctype="multipart/form-data">
+	        {% csrf_token %}
+	          {{form|crispy|safe}}
+	          {{form.media}}
+	        <input type="submit" name="" value="Submit">
+	      </form>
+	    </div>
+	</div>
+	<br>
+	{% endblock %}

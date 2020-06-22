@@ -1,0 +1,43 @@
+{% extends 'wordskill/base.html' %}
+	{% block head %}
+		<title>wordSkill-Blog Post</title>
+	{% endblock %}
+
+	{% block content %}
+	  <div class="col-md-10 mx-auto">
+	  	<p></p>
+		  <div class="card ">
+	    	<div class="card-body">
+		      	<h3>{{post.title}}</h3>
+		      		<h6 style="font-family: 'Dancing Script', cursive;">By {{post.author}} | Created {{post.created_on}}</h6>
+		      		<hr>
+		      	<br>
+		      		<div class="col-md-8">
+				      	<div class="card bg-dark text-center text-white">
+						  <img src="{{post.image.url}}" alt="Card image" width="656" height="400">
+						  <div class="card-img-overlay">
+		    				<h5 class="card-title" style="font-family: 'Dancing Script', cursive;">{{post.title}}</h5>
+		  				  </div>
+		  				 </div>
+					</div>
+					<br>
+		      	<p>{{post.description|safe}}</p>
+		      	<br>
+		      	<hr>
+		      	{% for comment in comments %}
+		      		<h6><strong>{{comment.username}} | {{comment.commented_on}} :</strong></h6>
+		      		<p>{{comment.desc}}</p>
+		      	{% endfor %} 
+		      	<form action="{% url 'posts:comment' post.id %}" method="POST" >
+		      		{% csrf_token %}
+		      		<label for="comment">Comment:</label>
+	  				<input type="text" name="comment_text">
+	  				<input type="submit" value="Post">
+		      	</form>
+		      	<hr>
+	    	</div>
+	    </div>
+	  </div>
+	<br>
+
+	{% endblock %}

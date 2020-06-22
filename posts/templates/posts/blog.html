@@ -1,0 +1,37 @@
+{% extends 'wordskill/base.html' %}
+	{% block head %}
+		<title>wordSkill-Blog</title>
+	{% endblock %}
+	
+	{% block content %}
+	  <div class=" mx-auto col-md-10">
+	    <p></p>
+	    <div class="card text-center">
+		    <div class="card-body">
+		      {% for post in posts %}
+		      	<a class="card-title" href="{% url 'posts:post' post.id %}" style="font-size: 40px"><b>{{post.title}}</b></a>
+		      	<br>
+		      	<a class="card-title" href="{% url 'posts:send_to_draft_post' post.id %}"style="color: cyan">Send to Draft</a>
+		      	<h6 style="font-family: 'Dancing Script', cursive;">By {{post.author}} | Published On: {{post.published_on}}</h6>
+		      	<hr>
+		      	<br>
+		      	<div class="mx-auto col-md-8">
+			      	<div class="card bg-dark text-center text-white">
+					  <img src="{{post.image.url}}" alt="Card image" width="656" height="400">
+					  <div class="card-img-overlay">
+	    				<h5 class="card-title" style="font-family: 'Dancing Script', cursive;">{{post.title}}</h5>
+	  				  </div>
+	  				 </div>
+				</div>
+				<br>
+		      	<p class="card-text text-left">{{post.description|safe}}</p>
+		      	<br>
+		      	<hr>
+		      	<hr>
+		      {% endfor %}
+	  		</div>
+	    </div>
+	</div>
+	<br>
+	
+	{% endblock %}
