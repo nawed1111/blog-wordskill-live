@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+from django.urls import reverse_lazy
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
+    'comment',
     'crispy_forms',
     'accounts.apps.AccountsConfig',
     'posts',
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
 
 ]
 
+LOGIN_URL = reverse_lazy('accounts:login')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -132,3 +136,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
+
+
+# Comment 
+
+COMMENT_FLAGS_ALLOWED = 1 
+
+PROFILE_APP_NAME = 'accounts'
+PROFILE_MODEL_NAME = 'UserProfile'

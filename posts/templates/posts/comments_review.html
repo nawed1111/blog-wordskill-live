@@ -13,7 +13,7 @@
 	      	<h3>Post: </h3>
 	      	<a href="{% url 'posts:post' comment.post.id %}"><h3>{{comment.post}}</h3></a>
 	      </div>     
-	      <h5>Commented On : {{comment.commented_on}}</h5>
+	      <h5>Commented by : {{comment.username}} | Commented On : {{comment.commented_on}}</h5>
 	      <p>{{comment.desc}}</h3></p>
 	      <div class="row">
 	      	<a href="{% url 'posts:delete_comment' comment.id %}" style="padding: 8px 0px 0px 8px;color: red">Delete</a>

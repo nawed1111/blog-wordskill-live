@@ -23,6 +23,7 @@ urlpatterns = [
 	path('', include('posts.urls',namespace = 'posts')),
 	path('auth/', include('accounts.urls',namespace = 'accounts')),
     path('admin/', admin.site.urls),
+    path('comment/', include('comment.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

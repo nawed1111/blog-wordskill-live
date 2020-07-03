@@ -1,7 +1,7 @@
 {% extends 'wordskill/base.html' %}
 {% load crispy_forms_tags %}
 	{% block head %}
-		<title>wordSkill-Draft New Post</title>
+		<title>wordSkill-New Post</title>
 	{% endblock %}
 
 	{% block content %}
@@ -12,7 +12,11 @@
 	        {% csrf_token %}
 	          {{form|crispy|safe}}
 	          {{form.media}}
-	        <input type="submit" name="" value="Submit">
+	         <div style="text-align: center;"> 
+		        <input class="btn btn-outline-success" type="submit" name="" value="Submit">
+		        <a href="{% url 'posts:home' %}"><button class="btn btn-outline-warning" type="submit">Cancel</button></a>
+		        <a href="{% url 'posts:new_post' %}"><button class="btn btn-outline-info" type="submit">Reset</button></a>
+		     </div>
 	      </form>
 	    </div>
 	</div>

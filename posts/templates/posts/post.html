@@ -1,43 +1,37 @@
 {% extends 'wordskill/base.html' %}
+{% load static %}
+{% load comment_tags %} 
 	{% block head %}
 		<title>wordSkill-Blog Post</title>
 	{% endblock %}
 
 	{% block content %}
-	  <div class="col-md-10 mx-auto">
-	  	<p></p>
-		  <div class="card ">
-	    	<div class="card-body">
-		      	<h3>{{post.title}}</h3>
-		      		<h6 style="font-family: 'Dancing Script', cursive;">By {{post.author}} | Created {{post.created_on}}</h6>
-		      		<hr>
-		      	<br>
-		      		<div class="col-md-8">
-				      	<div class="card bg-dark text-center text-white">
-						  <img src="{{post.image.url}}" alt="Card image" width="656" height="400">
-						  <div class="card-img-overlay">
-		    				<h5 class="card-title" style="font-family: 'Dancing Script', cursive;">{{post.title}}</h5>
-		  				  </div>
-		  				 </div>
-					</div>
-					<br>
-		      	<p>{{post.description|safe}}</p>
-		      	<br>
-		      	<hr>
-		      	{% for comment in comments %}
-		      		<h6><strong>{{comment.username}} | {{comment.commented_on}} :</strong></h6>
-		      		<p>{{comment.desc}}</p>
-		      	{% endfor %} 
-		      	<form action="{% url 'posts:comment' post.id %}" method="POST" >
-		      		{% csrf_token %}
-		      		<label for="comment">Comment:</label>
-	  				<input type="text" name="comment_text">
-	  				<input type="submit" value="Post">
-		      	</form>
-		      	<hr>
-	    	</div>
-	    </div>
-	  </div>
+  <br>
+	   <div class="col-md-12 blog-main">
+          <div class="blog-post">
+              <h2 class="blog-post-title text-dark">{{post.title}}</h2>
+              {% if request.user.is_staff %}
+              <a href="{% url 'posts:send_to_draft_post' post.id %}" style="padding: 8px 0px 0px 8px;color: blue;">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-book-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.261 13.666c.345.14.739-.105.739-.477V2.5a.472.472 0 0 0-.277-.437c-1.126-.503-5.42-2.19-7.723.129C5.696-.125 1.403 1.56.277 2.063A.472.472 0 0 0 0 2.502V13.19c0 .372.394.618.739.477C2.738 12.852 6.125 12.113 8 14c1.875-1.887 5.262-1.148 7.261-.334z"/>
+                </svg>
+                Send to Draft
+              </a>
+              {% endif %}
+              <p class="blog-post-meta">{{post.published_on}} by <a href="#">{{post.author}}</a></p>
+              {% if post.image %}
+        			<div class="card">
+          				<img class="card-post" src="{{post.image.url}}" alt="Card image" width="656" height="400">
+        			</div>
+              {% endif %} 
+  				    <br>
+  		      	<p>{{post.description|safe}}</p>
+
+              {% render_comments post request %}
+          </div>
+    		<hr>
+    			
+     </div>
 	<br>
 
 	{% endblock %}

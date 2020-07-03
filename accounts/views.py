@@ -41,3 +41,8 @@ def loginView(request):
 def logoutView(request):
 	logout(request)
 	return redirect('posts:home')
+
+def userProfileView(request):
+
+	context = {}
+	return render(request,'accounts/user.html',context)
