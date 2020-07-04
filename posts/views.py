@@ -21,7 +21,8 @@ def homeView(request):
 def blogView(request):
 	posts = Posts.objects.all().filter(post_published = True)
 #	comments = Comments.objects.all()
-	context = {'posts':posts,}
+	posts_count = posts.count()
+	context = {'posts':posts,'posts_count':posts_count}
 	return render(request,'posts/blog.html',context)
 
 
@@ -29,6 +30,7 @@ def blogView(request):
 @admin_only
 def draftView(request):
 	posts = Posts.objects.all().filter(post_published = False)
+	posts_count = posts.count()
 	context = {'posts':posts,}
 	return render(request,'posts/post_drafts.html',context)
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.utils import timezone
 from .forms import *
 
 from wordskill.decorators import unauthenticated_user
@@ -17,7 +18,9 @@ def registerView(request):
 			user = form.cleaned_data.get('username')
 			messages.success(request,"Account created successfully for "+user)
 			return redirect('accounts:login')
-	context = {'form':form}
+
+	current_year = timezone.now().strftime('%Y')
+	context = {'form':form, 'current_year':current_year}
 	return render(request,'accounts/register.html',context)
 
 
@@ -36,7 +39,10 @@ def loginView(request):
 			messages.info(request,"Username or Password incorrect!")
 			return render(request,'accounts/login.html')
 
-	return render(request,'accounts/login.html')
+	current_year = timezone.now().strftime('%Y')
+
+	context = {'current_year':current_year}
+	return render(request,'accounts/login.html',context)
 
 def logoutView(request):
 	logout(request)
