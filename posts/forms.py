@@ -1,10 +1,10 @@
 from django.forms import ModelForm
-from .models import Posts
+from .models import Post
 from django import forms
 
 
 class CreatePostForm(ModelForm):
     class Meta:
-        model=Posts
+        model=Post
         fields='__all__'
         exclude = ('published_on','post_published')

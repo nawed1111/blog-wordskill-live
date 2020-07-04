@@ -2,18 +2,18 @@
 {% load static %}
   {% block head %}
   <title>WordSKill</title>
-   <style type="text/css">
+
+  <style>
     .card-post {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
     border-radius: 5px
   }
 
-  .card-post, img {
+.card-post, img {
     border-radius: 5px 5px 5px 5px;
   }
-    </style>
-
+  </style>
   {% endblock %}
   {% block content %}
     
@@ -33,56 +33,59 @@
           <a class="p-2 text-muted" href="#">Travel</a>
         </nav>
       </div>
-          
+    {% if first_post.id %}
     <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
         <div class="col-md-10 px-0">
           <h1 class="display-5 font-italic">{{first_post.title}}</h1>
           <p class="lead my-3">Click here to view the content</p>
-          <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+          <p class="lead mb-0"><a href="{% url 'posts:post' first_post.id %}" class="text-white font-weight-bold">Continue reading...</a></p>
         </div>
-      </div>
-      
+    </div>
+    {% endif %}
+      {% if second_post.id %}
       <div class="row mb-2">
         <div class="col-md-6">
           <div class="card flex-md-row mb-4 box-shadow h-md-250">
             <div class="card-body d-flex flex-column align-items-start">
               <strong class="d-inline-block mb-2 text-primary">{{second_post.category}}</strong>
-              <h3 class="mb-0">
-                <a class="text-dark" href="#">{{second_post.title}}</a>
-              </h3>
+              <h4 class="mb-0">
+                <a class="text-dark" href="{% url 'posts:post' second_post.id %}">{{second_post.title}}</a>
+              </h4>
               <div class="mb-1 text-muted">{{second_post.published_on}}</div>
               <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-              <a href="#">Continue reading</a>
+              <a href="{% url 'posts:post' second_post.id %}">Continue reading</a>
             </div>
             {% if second_post.image %}
-          <img class="card-post" src="{{second_post.image.url}}" alt="" width="200" height="250">
-          {% endif %}
+              <img class="card-post" src="{{second_post.image.url}}" alt="" width="200" height="250" style="width: 40%">
+            {% endif %}
           </div>
-            </div>
+      </div>
+      {% endif %}
+      {% if third_post.id %}
               <div class="col-md-6">
                 <div class="card flex-md-row mb-4 box-shadow h-md-250">
                   <div class="card-body d-flex flex-column align-items-start">
-                    <strong class="d-inline-block mb-2 text-success">Design</strong>
-                    <h3 class="mb-0">
+                    <strong class="d-inline-block mb-2 text-success">{{third_post.category}}</strong>
+                    <h4 class="mb-0">
                       <a class="text-dark" href="{% url 'posts:post' third_post.id %}">{{third_post.title}}</a>
-                    </h3>
+                    </h4>
                     <div class="mb-1 text-muted">{{third_post.published_on}}</div>
                     <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
                     <a href="{% url 'posts:post' third_post.id %}">Continue reading</a>
                   </div>
                   {% if third_post.image %}
-                <img class="card-post" src="{{third_post.image.url}}" alt="" width="200" height="250">
+                <img class="card-post" src="{{third_post.image.url}}" alt="" width="200" height="250" style="width: 40%">
                 {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      {% endif %}
 
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8 blog-main">
           <h3 class="pb-3 mb-4 font-italic border-bottom">
-            From the Firehose
+            From WordSKill
           </h3>
           {% for post in posts%}
           <div class="blog-post">
@@ -99,7 +102,7 @@
               <p class="blog-post-meta">{{post.published_on}} by <a href="#">{{post.author}}</a></p>
               {% if post.image %}
               <div class="card">
-                  <img class="card-post" src="{{post.image.url}}" alt="Card image" style="width:100%">
+                  <img class="card-post" src="{{post.image.url}}" alt="Card image" width="656" height="400">
               </div>
               {% endif %} 
               <p>{{post.description|safe}}</p>
@@ -120,7 +123,7 @@
         <aside class="col-md-4 blog-sidebar">
           <div class="p-3 mb-3 bg-light rounded">
             <h4 class="font-italic">About</h4>
-            <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+            <p class="mb-0">A group of people looking to make some change in the society with the power of word.</p>
           </div>
 
           <div class="p-3 offset-md-4">

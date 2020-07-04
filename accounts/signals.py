@@ -3,7 +3,14 @@ from django.contrib.auth.models import User, Group
 
 def add_to_group(sender, instance, created, **kwargs):
 	if created:
-		group=Group.objects.get(name='standard')
+		try:
+			group=Group.objects.get(name='standard')
+
+		except Group.DoesNotExist:
+			group = Group()
+			group.name = 'standard'
+			group.save()
+
 		instance.groups.add(group)
 
 post_save.connect(add_to_group,sender=User)

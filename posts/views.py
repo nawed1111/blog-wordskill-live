@@ -9,17 +9,32 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def homeView(request):
-	posts = Posts.objects.all().filter(post_published = True)[3:7]
-	first_post = Posts.objects.all().filter(post_published = True).first()
-	second_post = Posts.objects.all().filter(post_published = True)[1]
-	third_post = Posts.objects.all().filter(post_published = True)[2]
+	
+	first_post = Post.objects.none()
+	second_post = Post.objects.none()
+	third_post = Post.objects.none()
+	posts = Post.objects.none()
+
+	posts = Post.objects.all().filter(post_published = True).order_by('-published_on')
+
+	if posts.count() > 2 :
+		first_post = posts.first()
+		second_post = posts[1]
+		third_post = posts[2]
+	elif posts.count() == 2:
+		first_post = posts.first()
+		second_post = posts[1]
+	elif posts.count() == 1:
+		first_post = posts.first()
+
+	posts = posts[3:7]
 
 	context = {'posts':posts,'first_post':first_post,'second_post':second_post,'third_post':third_post}
 	return render(request,'posts/home.html',context)
 
 
 def blogView(request):
-	posts = Posts.objects.all().filter(post_published = True)
+	posts = Post.objects.all().filter(post_published = True).order_by('-published_on')
 #	comments = Comments.objects.all()
 	posts_count = posts.count()
 	context = {'posts':posts,'posts_count':posts_count}
@@ -29,13 +44,13 @@ def blogView(request):
 @login_required(login_url='accounts:login')
 @admin_only
 def draftView(request):
-	posts = Posts.objects.all().filter(post_published = False)
+	posts = Post.objects.all().filter(post_published = False).order_by('-created_on')
 	posts_count = posts.count()
-	context = {'posts':posts,}
+	context = {'posts':posts,'posts_count':posts_count}
 	return render(request,'posts/post_drafts.html',context)
 
 def postView(request,pk):
-	post = Posts.objects.get(id=pk)
+	post = Post.objects.get(id=pk)
 	
 	context = {'post':post}
 	return render(request,'posts/post.html',context)
@@ -46,7 +61,7 @@ def postView(request,pk):
 @admin_only
 def createPostView(request):
 	form = CreatePostForm()
-	posts = Posts.objects.all().filter(post_published = False)
+	posts = Post.objects.all().filter(post_published = False)
 	context = {'form':form,'posts':posts,}
 
 	if request.method == 'POST':
@@ -62,9 +77,9 @@ def createPostView(request):
 @login_required(login_url='accounts:login')
 @admin_only
 def updatePostView(request,pk):
-	post = Posts.objects.get(id=pk)
+	post = Post.objects.get(id=pk)
 	form = CreatePostForm(instance=post)
-	posts = Posts.objects.all().filter(post_published = False)
+	posts = Post.objects.all().filter(post_published = False)
 
 	context = {'form':form,'post':post,'posts':posts}
 	if request.method == 'POST':
@@ -79,7 +94,7 @@ def updatePostView(request,pk):
 @login_required(login_url='accounts:login')
 @admin_only
 def deletePostView(request,pk):
-	post = Posts.objects.get(id=pk)
+	post = Post.objects.get(id=pk)
 
 	if request.method == 'POST':
 		post.delete()
@@ -92,8 +107,8 @@ def deletePostView(request,pk):
 @login_required(login_url='accounts:login')
 @admin_only
 def publishPostView(request,pk):
-	post = Posts.objects.get(id=pk)
-	posts = Posts.objects.all().filter(post_published = True)
+	post = Post.objects.get(id=pk)
+	posts = Post.objects.all().filter(post_published = True)
 	context = {'posts':posts,'post':post,}
 	if request.method == 'POST':
 		post.post_published = True
@@ -109,62 +124,14 @@ def publishPostView(request,pk):
 @admin_only
 def publishToDraftView(request,pk):
 
-	post = Posts.objects.get(id=pk)
-	posts = Posts.objects.all().filter(post_published = False)
-	context = {'posts':posts,'post':post,}
-
+	post = Post.objects.get(id=pk)
 	post.post_published = False
 	post.save()
+
+	posts = Post.objects.all().filter(post_published = False).order_by('-created_on')
+	posts_count = posts.count()
+
+	context = {'posts':posts,'post':post,'posts_count':posts_count}
+
+	
 	return render(request,'posts/post_drafts.html',context)
-
-
-# @login_required(login_url='accounts:login')
-# def createCommentView(request,pk):
-
-# 	if request.method == 'POST':
-# 		data = request.POST
-# 		post = Posts.objects.get(id=pk)
-# 		model = Comments(post=post,username=request.user.username,desc=data['comment_text'])
-# 		model.save()
-
-# 		comments = Comments.objects.all().filter(post=post, comment_posted = True)
-# 		context = {'post':post,'comments':comments}
-# 		return render(request,'posts/post.html',context)
-
-
-# @login_required(login_url='accounts:login')
-# @admin_only
-# def reviewCommentsView(request):
-# 	comments = Comments.objects.all().filter(comment_posted = False)
-# 	context = {'comments':comments,}
-# 	return render(request,'posts/comments_review.html',context)
-
-
-# @login_required(login_url='accounts:login')
-# @admin_only
-# def deleteCommentView(request,pk):
-# 	comment = Comments.objects.get(id=pk)
-
-# 	comments = Comments.objects.all().filter(comment_posted = False)
-# 	context = {'comment':comment,'comments':comments,}
-
-# 	if request.method == 'POST':
-# 		comment.delete()
-# 		return render(request,'posts/comments_review.html',context)
-
-# 	return render(request,'posts/comment_delete.html',context)
-
-
-# @login_required(login_url='accounts:login')
-# @admin_only
-# def publishCommentView(request,pk):
-# 	comment = Comments.objects.get(id=pk)
-# 	comments = Comments.objects.all().filter(comment_posted = False)
-# 	context = {'comment':comment,'comments':comments,}
-
-# 	if request.method == 'POST':
-# 		comment.comment_posted = True
-# 		comment.save()
-# 		return render(request,'posts/comments_review.html',context)
-		
-# 	return render(request,'posts/comment_publish.html',context)

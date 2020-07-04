@@ -9,6 +9,7 @@
 	<div class="col-md-12 blog-main">
 		<a href="{% url 'posts:new_post' %}"><button class="btn btn-primary">Create New Post</button></a>
 	    <p></p>
+	    <h4>WordSkill currently have {{posts_count}} post{{posts_count|pluralize}} in draft.</h4>
           {% for post in posts%}
           <div class="blog-post">
               <a class="blog-post-title text-dark" href="{% url 'posts:post' post.id %}">{{post.title}}</a>
@@ -30,7 +31,7 @@
 				  <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1 0 13.5 8a.5.5 0 0 1 1 0 6.5 6.5 0 1 1-3.25-5.63.5.5 0 1 1-.5.865A5.472 5.472 0 0 0 8 2.5z"/>
 				</svg>
 			</a>
-              <p class="blog-post-meta">{{post.published_on}} by <a href="#">{{post.author}}</a></p>
+              <p class="blog-post-meta">{{post.created_on}} by <a href="#">{{post.author}}</a></p>
               {% if post.image %}
         			<div class="card">
           				<img class="card-post" src="{{post.image.url}}" alt="Card image" width="656" height="400">

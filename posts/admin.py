@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Posts, Tag
+from .models import Post, Tag, Category
 
 # Register your models here.
-admin.site.register(Posts)
+admin.site.register(Post)
 admin.site.register(Tag)
+admin.site.register(Category)
