@@ -1,8 +1,11 @@
-import django_filers
-
+import django_filters
+from django_filters import CharFilter
 from .models import *
 
-class OrderPost(django_filers.FilerSet):
+class PostFilter(django_filters.FilterSet):
+
+	title = CharFilter(field_name='title',lookup_expr='icontains')
+
 	class Meta:
-		model = Posts
-		fields = '__all__'
+		model = Post
+		fields = ['title']

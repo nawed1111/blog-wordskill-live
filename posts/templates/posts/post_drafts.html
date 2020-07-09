@@ -10,6 +10,7 @@
 		<a href="{% url 'posts:new_post' %}"><button class="btn btn-primary">Create New Post</button></a>
 	    <p></p>
 	    <h4>WordSkill currently have {{posts_count}} post{{posts_count|pluralize}} in draft.</h4>
+	    <hr>
           {% for post in posts%}
           <div class="blog-post">
               <a class="blog-post-title text-dark" href="{% url 'posts:post' post.id %}">{{post.title}}</a>

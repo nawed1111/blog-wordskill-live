@@ -46,10 +46,15 @@ INSTALLED_APPS = [
     'posts',
     'ckeditor',
     'django_filters',
+    # 'import_export',
+    # 'social_widgets',
 
 ]
 
 LOGIN_URL = reverse_lazy('accounts:login')
+
+# IMPORT_EXPORT_USE_TRANSACTIONS = True
+# IMPORT_EXPORT_IMPORT_PERMISSION_CODE = 'change'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -132,6 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
 MEDIA_URL = '/images/'

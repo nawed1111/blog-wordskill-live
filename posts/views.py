@@ -4,9 +4,9 @@ from django.utils import timezone
 from .forms import CreatePostForm
 from .models import *
 from wordskill.decorators import *
-
+from .filters import PostFilter
 from django.contrib.auth.decorators import login_required
-
+import calendar, datetime
 # Create your views here.
 def homeView(request):
 	
@@ -29,15 +29,64 @@ def homeView(request):
 
 	posts = posts[3:7]
 
-	context = {'posts':posts,'first_post':first_post,'second_post':second_post,'third_post':third_post}
+	current_year = timezone.now().strftime('%Y')
+	current_month = timezone.now().strftime('%m')
+
+	years = []
+	months = []
+
+	for month in range(1,int(current_month)+1):
+		months.append(calendar.month_name[month])
+
+	for year in range(2020,int(current_year)+1):
+		years.append(year)
+
+	context = {'posts':posts,'first_post':first_post,'second_post':second_post,'third_post':third_post,
+				'current_year':current_year,'months':months,'years':years}
+
 	return render(request,'posts/home.html',context)
 
 
 def blogView(request):
+
 	posts = Post.objects.all().filter(post_published = True).order_by('-published_on')
-#	comments = Comments.objects.all()
-	posts_count = posts.count()
-	context = {'posts':posts,'posts_count':posts_count}
+	post_filter = PostFilter(request.GET,queryset=posts)
+	posts = post_filter.qs
+
+	context = {'posts':posts,'post_filter':post_filter}
+	return render(request,'posts/blog.html',context)
+
+
+def filteredBlogViewOnCategory(request, category):
+
+	posts = Post.objects.all().filter(post_published = True).filter(category__name = category).order_by('-published_on')
+	post_filter = PostFilter(request.GET,queryset=posts)
+	posts = post_filter.qs
+
+	context = {'posts':posts,'post_filter':post_filter}
+	return render(request,'posts/blog.html',context)
+
+def filteredBlogViewOnMonth(request,month):
+
+	datetime_object = datetime.datetime.strptime(month, "%B")
+	month_number = datetime_object.month
+
+	current_year = timezone.now().strftime('%Y')
+
+	posts = Post.objects.all().filter(post_published = True).filter(published_on__month = month_number, published_on__year= current_year).order_by('-published_on')
+	post_filter = PostFilter(request.GET,queryset=posts)
+	posts = post_filter.qs
+
+	context = {'posts':posts,'post_filter':post_filter,}
+	return render(request,'posts/blog.html',context)
+
+def filteredBlogViewOnYear(request,year):
+
+	posts = Post.objects.all().filter(post_published = True).filter(published_on__year= year).order_by('-published_on')
+	post_filter = PostFilter(request.GET,queryset=posts)
+	posts = post_filter.qs
+
+	context = {'posts':posts,'post_filter':post_filter,}
 	return render(request,'posts/blog.html',context)
 
 
@@ -54,7 +103,6 @@ def postView(request,pk):
 	
 	context = {'post':post}
 	return render(request,'posts/post.html',context)
-	
 
 
 @login_required(login_url='accounts:login')
@@ -108,13 +156,12 @@ def deletePostView(request,pk):
 @admin_only
 def publishPostView(request,pk):
 	post = Post.objects.get(id=pk)
-	posts = Post.objects.all().filter(post_published = True)
-	context = {'posts':posts,'post':post,}
+	context = {'post':post,}
 	if request.method == 'POST':
 		post.post_published = True
 		post.published_on = timezone.now()
 		post.save()
-		return render(request,'posts/blog.html',context)
+		return render(request,'posts/post.html',context)
 
 	context = {'post':post,}
 	return render(request,'posts/post_publish.html',context)

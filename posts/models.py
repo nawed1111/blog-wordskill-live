@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.urls import reverse
 
 
 from django.contrib.contenttypes.fields import GenericRelation
@@ -24,7 +25,7 @@ class Post(models.Model):
 	description = RichTextField(blank=True, null=True)
 	author = models.CharField(max_length=200)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
-	created_on = models.DateTimeField(auto_now_add= True)
+	created_on = models.DateField(auto_now_add= True)
 	published_on =models.DateTimeField(blank = True, null = True)
 	image = models.ImageField(blank = True, null=True)
 	post_published = models.BooleanField(default=False)
@@ -34,7 +35,9 @@ class Post(models.Model):
 	def __str__(self):
 		return self.title
 
-
+	def get_absolute_url(self):
+		return reverse('posts:post', kwargs={'pk': self.pk})
+    	
 
 
 

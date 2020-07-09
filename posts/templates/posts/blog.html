@@ -1,8 +1,26 @@
 {% extends 'wordskill/base.html' %}
 {% load static %}
-
+{% load comment_tags %}
 	{% block head %}
 		<title>wordSkill-Blog</title>
+    <style>
+      .filter input{
+
+        border-radius: 2rem;
+      }
+      .filter > .btn {
+        border-radius: 2rem;
+      }
+      .content-overflow {
+        height: 200px;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+        display: block;
+        text-decoration: none;
+        text-overflow: ellipsis;
+      }
+    </style>
 	{% endblock %}
 	
 	{% block content %}
@@ -10,11 +28,11 @@
 	 <div class="col-md-12 blog-main">
 
       <br>
-      <form>             
-        <input class="search-icon" type="text" name="" placeholder="Keyword..." size="10">
-          <a class="text-muted" href="#">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-          </a>
+      <form method="GET">
+      <div class="filter">
+        {{post_filter.form}}
+        <button class="btn btn-outline-secondary btn-sm">Search</button>
+      </div>             
       </form>
       <br>
           {% for post in posts %}
@@ -31,13 +49,18 @@
               <p class="blog-post-meta">&nbsp {{post.published_on}} by <a href="#">{{post.author}}</a></p>
               {% if post.image %}
         			<div class="card">
-          				<img class="card-post" src="{{post.image.url}}" alt="" width="656" height="400">
+          				<img class="card-post" src="{{post.image.url}}" alt="" height="400" style="width: 70%;">
         			</div>
-              {% endif %} 
-  		      	<p>{{post.description|safe}}</p>
+              {% endif %}
+              <div class="content-overflow">
+                <p>{{post.description|safe}}</p>  
               </div>
+              <br>
+              <div class="filter">
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'posts:post' post.id %}">show more</a>
+              </div>
+  		      	{% render_comments post request comments_per_page=1 %}
+        </div>
               {% endfor %}
      </div>
-	<br>
-	
 	{% endblock %}

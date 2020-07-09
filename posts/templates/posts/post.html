@@ -1,5 +1,6 @@
 {% extends 'wordskill/base.html' %}
 {% load static %}
+
 {% load comment_tags %} 
 	{% block head %}
 		<title>wordSkill-Blog Post</title>
@@ -18,10 +19,11 @@
                 Send to Draft
               </a>
               {% endif %}
+
               <p class="blog-post-meta">{{post.published_on}} by <a href="#">{{post.author}}</a></p>
               {% if post.image %}
         			<div class="card">
-          				<img class="card-post" src="{{post.image.url}}" alt="Card image" width="656" height="400">
+          				<img class="card-post" src="{{post.image.url}}" alt="" height="400" style="width: 60%;">
         			</div>
               {% endif %} 
   				    <br>
