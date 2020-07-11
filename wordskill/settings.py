@@ -27,7 +27,7 @@ SECRET_KEY = '@a5lt0c==1rdd7b(^qr%ul6&y6sixq$(plnj&yf+vn!^^v6^fr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['blog-wordskill.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -138,7 +138,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
