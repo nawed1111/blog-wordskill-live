@@ -16,9 +16,4 @@ urlpatterns = [
 	path('delete_post/<str:pk>/',views.deletePostView,name = 'delete_post'),
 	path('publish_post/<str:pk>/',views.publishPostView,name = 'publish_post'),
 	path('send_to_draft_post/<str:pk>/',views.publishToDraftView,name = 'send_to_draft_post'),
-    # path('comment/<str:pk>/',views.createCommentView,name = 'comment'),
-#     path('review_comments/',views.reviewCommentsView,name = 'review_comments'),
-#     path('delete_comment/<str:pk>/',views.deleteCommentView,name = 'delete_comment'),
-#     path('publish_comment/<str:pk>/',views.publishCommentView,name = 'publish_comment'),
-
 ]

@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'posts',
     'ckeditor',
     'django_filters',
-    # 'import_export',
     # 'social_widgets',
 
 ]
@@ -60,6 +59,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -137,7 +137,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
 MEDIA_URL = '/images/'
@@ -148,5 +150,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
 COMMENT_FLAGS_ALLOWED = 1 
 
-PROFILE_APP_NAME = 'accounts'
-PROFILE_MODEL_NAME = 'UserProfile'
+# PROFILE_APP_NAME = 'accounts'
+# PROFILE_MODEL_NAME = 'UserProfile'
