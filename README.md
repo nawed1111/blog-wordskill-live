@@ -2,8 +2,9 @@
 Visit website https://blog-wordskill.herokuapp.com/
 
 Clone This Project (Make Sure You Have Git Installed)
+<p>
 https://github.com/nawed1111/blog-wordskill-live.git
-
+</p>
 Install Dependencies
 
 pip install -r requirements.txt
